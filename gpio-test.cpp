@@ -23,6 +23,7 @@
 void irq_handler(int n, siginfo_t *info, void *unused)
 {
 	printf("Received value 0x%X\n", info->si_int);
+	fflush(stdout);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -95,6 +96,7 @@ int main(int argc, char* argv[])
 		if(!init_handler(gpio))
 		{
 			printf("Can't handle GPIO %d!\n",gpio);
+			fflush(stdout);
 			return -1;
 		}
 
@@ -102,14 +104,12 @@ int main(int argc, char* argv[])
 	    siginfo_t siginfo;
 
 	    sigemptyset(&sigset);
-	    sigaddset(&sigset, SIGINT);	//	Ctrl+C
-//		sigaddset(&sigset, SIGQUIT);
-//		sigaddset(&sigset, SIGSTOP);
-//	    sigaddset(&sigset, SIGTERM);
+	    sigaddset(&sigset, SIGINT);
 
 	    sigprocmask(SIG_BLOCK, &sigset, NULL);
 
 		printf("Waiting GPIO %d signals...\n",gpio);
+		fflush(stdout);
 
 		while(1)
 		{
@@ -124,6 +124,7 @@ int main(int argc, char* argv[])
 	}
 
 	printf("Need GPIO number to handle.\n");
+	fflush(stdout);
 	return -1;
 }
 
